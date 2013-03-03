@@ -6,7 +6,7 @@
 # the value is optional and defaults to Click to Expand 
 # the mnString parameter is also optional and defaults to Click to Minimize 
 # a div element is created with the id expander inside the element specified (the el paramter). 
-# Upon clicking on the expander the elmeent jumps to its regular height 
+# Upon clicking on the expander the element jumps to its regular height 
 
 */ 
 
