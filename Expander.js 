@@ -1,0 +1,96 @@
+/* This is the Expander class designed for Prototype Javascript 
+# When instantiating a new class you must give the class a proper prototype element 
+# to act as the element which needs to be shrunk. 
+# the maxHeight must be an integer and is a required variable 
+# the exString is short for Expand String. It is the string which appears in the button,
+# the value is optional and defaults to Click to Expand 
+# the mnString parameter is also optional and defaults to Click to Minimize 
+# a div element is created with the id expander inside the element specified (the el paramter). 
+# Upon clicking on the expander the elmeent jumps to its regular height 
+
+*/ 
+
+
+
+var Expander = Class.create({ 
+
+  initialize: function (el,maxHeight,exString,mnString) {
+  this.el = el;  
+	this.maxHeight = maxHeight; 
+	this.exString = exString; 
+	this.mnString = mnString; 
+	//first we get the height of the element given 
+	//if we can't get height throw an exception
+	if (Element.getHeight(el))
+	{ 
+	this.elHeight = Element.getHeight(el);
+	}
+	else 
+	{ 
+	throw "Please insert a proper elment variable into the constructor"; 
+	}
+	// now we need an if statement to see if the content is greater than the 	specified height in pixels 
+	maxHeight = parseInt(maxHeight);
+	if (this.elHeight > maxHeight)
+	{
+	el.style.height = maxHeight + "px"; 
+	var exp = new Element('div',{'id':'expander'});
+    	//check to see if exString is a string parameter
+	//if it is set the innerHTML to it
+		if ('undefined' !== typeof(this.exString))
+		{
+		this.exString = this.exString.toString();
+    		exp.innerHTML = this.exString;
+		}
+		else {
+		this.exString = "Click to Expand";
+		exp.innerHTML = this.exString;
+		}
+	//now make a quick set and check for minimize button 
+		if ('undefined' !== typeof(this.mnString))
+		{
+		this.mnString = this.mnString.toString(); 
+		this.mnString = this.mnString;  
+		}
+		else {
+		this.mnString = "Click to Minimize"; 
+		}
+	 el.insert({
+    	  bottom: exp
+   	 });
+	}
+
+	//here we set up the observers that toggle the button 
+	//we also make a check to see if the expander element exists 
+	if ($('expander'))
+        {
+	$('expander').observe('click',this.handleClick.bind(this));        
+	}
+
+	
+},//end initialization function
+
+handleClick: function() {
+   if ($('expander').innerHTML== this.exString) 
+		{
+		this.el.style.height = this.elHeight + 'px';  
+		$('expander').innerHTML = this.mnString;
+		}
+		else if ($('expander').innerHTML== this.mnString)
+		{
+		this.el.style.height = this.maxHeight + 'px'; 
+		$('expander').innerHTML = this.exString; 
+		}
+  },//end handleclick 
+
+ 
+//create a function that does preliminary things to restart the Expander 
+removeEx: function () {
+	if ($('expander'))
+	{
+	Element.remove($('expander'));
+	}
+	this.el.style.height="auto";
+}
+
+});
